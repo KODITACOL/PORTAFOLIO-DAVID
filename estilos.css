@@ -346,7 +346,8 @@ html {
     padding: 20px 0;
 }
 
-.sobremi .contenido-seccion p {
+.sobremi .contenido-seccion p,
+.portfolio .subseccion p {
     font: 18px;
     line-height: 22px;
     margin-bottom: 20px;
