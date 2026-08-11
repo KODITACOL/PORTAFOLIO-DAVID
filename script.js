@@ -111,6 +111,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Inicializar lazy loading
     lazyLoadImages();
+
+    // Mostrar contador de visitas
+    actualizarContadorVisitas();
     
     // Efectos de escritura para títulos principales
     const titulo = document.querySelector('.contenido-banner h1');
@@ -232,6 +235,32 @@ function resetearAnimaciones() {
             habilidad.classList.remove(clasesHabilidades[index]);
         }
     });
+}
+
+async function actualizarContadorVisitas() {
+    const elemento = document.getElementById("contador-visitas");
+    if (!elemento) return;
+
+    const etiqueta = elemento.querySelector("span");
+
+    try {
+        const respuesta = await fetch("https://api.countapi.xyz/hit/andres-david-portfolio/visitas");
+        if (!respuesta.ok) throw new Error("No se pudo consultar el contador");
+
+        const datos = await respuesta.json();
+        if (etiqueta) {
+            etiqueta.textContent = `${datos.value.toLocaleString("es-CO")} visitas`;
+        }
+    } catch (error) {
+        console.warn("No se pudo actualizar el contador de visitas:", error);
+        const visitasGuardadas = Number(localStorage.getItem("visitasPortfolio") || "0");
+        const siguienteValor = visitasGuardadas + 1;
+        localStorage.setItem("visitasPortfolio", String(siguienteValor));
+
+        if (etiqueta) {
+            etiqueta.textContent = `${siguienteValor.toLocaleString("es-CO")} visitas`;
+        }
+    }
 }
 
 // ===== NUEVAS FUNCIONES AGREGADAS =====
