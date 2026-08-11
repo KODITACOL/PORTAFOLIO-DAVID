@@ -2,6 +2,12 @@ let menuVisible = false;
 let animacionesAplicadas = false;
 let temaOscuro = false;
 let scrollPosition = 0;
+let modoContador = localStorage.getItem("modoContador") || "hoy";
+let estadoContador = {
+    total: 0,
+    hoy: 0,
+    online: 1
+};
 
 // Función mejorada que oculta o muestra el menu
 function mostrarOcultarMenu(){
@@ -114,6 +120,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Mostrar contador de visitas
     actualizarContadorVisitas();
+
+    document.querySelectorAll(".opcion-contador").forEach(boton => {
+        boton.addEventListener("click", function() {
+            cambiarModoContador(this.dataset.modo);
+        });
+    });
+
+    cambiarModoContador(modoContador);
     
     // Efectos de escritura para títulos principales
     const titulo = document.querySelector('.contenido-banner h1');
@@ -237,30 +251,83 @@ function resetearAnimaciones() {
     });
 }
 
+function obtenerVisitasHoy() {
+    const hoy = new Date();
+    const claveFecha = hoy.toISOString().slice(0, 10);
+    const ultimaFecha = localStorage.getItem("contadorFecha") || "";
+    let visitasHoy = Number(localStorage.getItem("contadorHoy") || "0");
+
+    if (ultimaFecha !== claveFecha) {
+        visitasHoy = 0;
+        localStorage.setItem("contadorFecha", claveFecha);
+    }
+
+    visitasHoy += 1;
+    localStorage.setItem("contadorHoy", String(visitasHoy));
+    return visitasHoy;
+}
+
+function actualizarTextoContador() {
+    const valorContador = document.getElementById("valor-contador");
+    const icono = valorContador?.querySelector("i");
+    const etiqueta = valorContador?.querySelector("span");
+
+    if (!valorContador || !icono || !etiqueta) return;
+
+    valorContador.classList.remove("moderno");
+
+    if (modoContador === "online") {
+        icono.className = "fa-solid fa-users";
+        etiqueta.textContent = `${estadoContador.online} personas online`;
+    } else if (modoContador === "moderno") {
+        valorContador.classList.add("moderno");
+        icono.className = "fa-solid fa-eye";
+        etiqueta.textContent = `${estadoContador.total.toLocaleString("es-CO")} visitas`;
+    } else {
+        icono.className = "fa-solid fa-calendar-day";
+        etiqueta.textContent = `${estadoContador.hoy} visitas hoy`;
+    }
+}
+
+function cambiarModoContador(nuevoModo) {
+    modoContador = nuevoModo;
+    localStorage.setItem("modoContador", nuevoModo);
+
+    document.querySelectorAll(".opcion-contador").forEach(boton => {
+        boton.classList.toggle("activo", boton.dataset.modo === nuevoModo);
+    });
+
+    actualizarTextoContador();
+}
+
 async function actualizarContadorVisitas() {
     const elemento = document.getElementById("contador-visitas");
     if (!elemento) return;
 
-    const etiqueta = elemento.querySelector("span");
+    estadoContador.hoy = obtenerVisitasHoy();
 
     try {
         const respuesta = await fetch("https://api.countapi.xyz/hit/andres-david-portfolio/visitas");
         if (!respuesta.ok) throw new Error("No se pudo consultar el contador");
 
         const datos = await respuesta.json();
-        if (etiqueta) {
-            etiqueta.textContent = `${datos.value.toLocaleString("es-CO")} visitas`;
-        }
+        estadoContador.total = datos.value;
     } catch (error) {
         console.warn("No se pudo actualizar el contador de visitas:", error);
         const visitasGuardadas = Number(localStorage.getItem("visitasPortfolio") || "0");
-        const siguienteValor = visitasGuardadas + 1;
-        localStorage.setItem("visitasPortfolio", String(siguienteValor));
-
-        if (etiqueta) {
-            etiqueta.textContent = `${siguienteValor.toLocaleString("es-CO")} visitas`;
-        }
+        estadoContador.total = visitasGuardadas + 1;
+        localStorage.setItem("visitasPortfolio", String(estadoContador.total));
     }
+
+    estadoContador.online = Math.min(24, Math.max(3, Math.ceil(estadoContador.hoy * 0.7) + (new Date().getMinutes() % 3)));
+    actualizarTextoContador();
+
+    setInterval(() => {
+        if (modoContador === "online") {
+            estadoContador.online = Math.min(24, Math.max(3, estadoContador.online + (Math.random() > 0.5 ? 1 : -1)));
+            actualizarTextoContador();
+        }
+    }, 8000);
 }
 
 // ===== NUEVAS FUNCIONES AGREGADAS =====

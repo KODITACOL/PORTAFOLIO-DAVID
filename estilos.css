@@ -11,6 +11,14 @@ html {
     scroll-behavior: smooth;
 }
 
+body {
+    background-color: #f6f6f6;
+}
+
+section {
+    scroll-margin-top: 90px;
+}
+
 /* Contenedor Header */
 .contenedor-header {
     background: 
@@ -236,17 +244,57 @@ html {
 }
 
 .inicio .contenido-banner .contador-visitas {
-    display: inline-flex;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 8px;
     margin-top: 18px;
+    color: #f5f5f5;
+    font-size: 0.95rem;
+}
+
+.inicio .contenido-banner .contador-opciones {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+}
+
+.inicio .contenido-banner .contador-opciones .opcion-contador {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    padding: 6px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.78rem;
+    transition: all 0.3s ease;
+}
+
+.inicio .contenido-banner .contador-opciones .opcion-contador:hover,
+.inicio .contenido-banner .contador-opciones .opcion-contador.activo {
+    background: #ffffff;
+    color: #000000;
+    transform: translateY(-1px);
+}
+
+.inicio .contenido-banner .contador-valor {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     padding: 8px 14px;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #f5f5f5;
-    font-size: 0.95rem;
     backdrop-filter: blur(8px);
+    min-width: 180px;
+    justify-content: center;
+}
+
+.inicio .contenido-banner .contador-valor.moderno {
+    background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.08));
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 /* Visor PDF */
@@ -291,6 +339,75 @@ html {
 .visor-pdf a:hover {
     text-decoration: underline;
     color: #333333;
+}
+
+/* Encabezados de sección */
+.encabezado-seccion {
+    max-width: 760px;
+    margin: 0 auto 35px;
+    text-align: center;
+}
+
+.eyebrow {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid currentColor;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+}
+
+.texto-intro {
+    font-size: 1.03rem;
+    line-height: 1.75;
+    margin: 0 auto;
+    max-width: 700px;
+}
+
+.resumen-rapido {
+    background: linear-gradient(135deg, #f7f7f7 0%, #efefef 100%);
+    padding: 30px 20px 0;
+}
+
+.resumen-rapido .contenido-seccion {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.tarjeta-resumen {
+    background: rgba(255,255,255,0.9);
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+.tarjeta-resumen i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #000000;
+    color: #ffffff;
+    margin-bottom: 12px;
+}
+
+.tarjeta-resumen h3 {
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.tarjeta-resumen p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #444;
 }
 
 /* Sobre Mi */
@@ -357,13 +474,13 @@ html {
     font-size: 48px;
     font-family: 'Righteous';
     text-align: center;
-    padding: 20px 0;
+    padding: 10px 0 15px;
 }
 
 .sobremi .contenido-seccion p,
 .portfolio .subseccion p {
-    font: 18px;
-    line-height: 22px;
+    font-size: 1.02rem;
+    line-height: 1.7;
     margin-bottom: 20px;
 }
 
@@ -374,10 +491,19 @@ html {
 
 .sobremi .fila {
     display: flex;
+    gap: 20px;
 }
 
 .sobremi .fila .col {
     width: 50%;
+}
+
+.sobremi .fila .panel-info {
+    background: rgba(255,255,255,0.72);
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
 }
 
 .sobremi .fila .col h3 {
@@ -541,7 +667,23 @@ html {
     font-size: 48px;
     font-family: 'Righteous';
     text-align: center;
-    padding: 20px 0;
+    padding: 10px 0 15px;
+}
+
+.curriculum .chips-habilidades {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 0 auto 30px;
+}
+
+.curriculum .chips-habilidades span {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.16);
+    font-size: 0.9rem;
 }
 
 .curriculum .fila {
@@ -736,6 +878,16 @@ html {
 .portfolio h2 {
     font-size: 56px;
     text-align: center;
+    padding: 10px 0 15px;
+}
+
+.portfolio .subseccion {
+    background: rgba(255,255,255,0.6);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
 }
 
 .portfolio .galeria {
@@ -982,12 +1134,17 @@ footer .arriba {
 }
 
 @media screen and (max-width: 700px) {
+    .resumen-rapido .contenido-seccion {
+        grid-template-columns: 1fr;
+    }
+
     .sobremi .fila {
         display: block;
     }
 
     .sobremi .fila .col {
-        width: fit-content;
+        width: 100%;
+        margin-bottom: 16px;
     }
 
     .skills .fila {

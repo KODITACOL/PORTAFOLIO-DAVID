@@ -49,8 +49,15 @@
                 <a href="documentos/Cv.pdf" download="Hoja_de_vida_Andres_David_Cardenas_Castro.pdf" title="Descargar hoja de vida" aria-label="Descargar hoja de vida"><i class="fa-solid fa-file-arrow-down"></i></a>
             </div>
             <div class="contador-visitas" id="contador-visitas" aria-live="polite">
-                <i class="fa-solid fa-eye"></i>
-                <span>Cargando visitas...</span>
+                <div class="contador-opciones" role="group" aria-label="Elegir estilo del contador">
+                    <button type="button" class="opcion-contador activo" data-modo="hoy">Visitas hoy</button>
+                    <button type="button" class="opcion-contador" data-modo="online">Personas online</button>
+                    <button type="button" class="opcion-contador" data-modo="moderno">Moderno</button>
+                </div>
+                <div class="contador-valor" id="valor-contador">
+                    <i class="fa-solid fa-calendar-day"></i>
+                    <span>Cargando visitas...</span>
+                </div>
             </div>
         </div>
     </section>
